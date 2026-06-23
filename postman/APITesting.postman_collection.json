@@ -1,0 +1,1282 @@
+{
+  "info": {
+    "_postman_id": "bd94bcdb-1773-4b10-a0a1-7399bb31a429",
+    "name": "APITesting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "23841588"
+  },
+  "item": [
+    {
+      "name": "JSONPlaceholderCRUDBasics",
+      "item": [
+        {
+          "name": "Get Posts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify POST request is successful\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify created element fields\", function () {",
+                  "    // Use pm.response.json() if it's single JSON object (not an array)",
+                  "    var jsonData = pm.response.json();",
+                  "",
+                  "    // Check that element's fiels are correct",
+                  "    pm.expect(jsonData.title).to.eql(\"created resourse\");",
+                  "    pm.expect(jsonData.userId).to.eql(\"1\");",
+                  "    pm.expect(jsonData.id).to.eql(101);",
+                  "    pm.expect(jsonData.body).to.eql(\"this post request is generated in Postman\");",
+                  "});",
+                  "",
+                  "// Add id to env for next request",
+                  "pm.environment.set(\"id\", pm.response.json().id);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"title\": \"created resourse\",\r\n    \"body\": \"this post request is generated in Postman\",\r\n    \"userId\": \"1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/posts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Post By Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "//Since it's fake API my post wasn't actually saved, so I'm checking for a 404 status code.\r",
+                  "pm.test(\"Verify that status code is 404\", function () {\r",
+                  "    pm.response.to.have.status(404);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/posts/{{id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "{{id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Resource will not be really updated on the server but it will be faked as if\r",
+                  "pm.test(\"Verify post updated\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData.title).to.eql(\"Updated title\");\r",
+                  "    pm.expect(jsonData.body).to.eql(\"Updated body\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"id\": 3,\r\n  \"title\": \"Updated title\",\r\n  \"body\": \"Updated body\",\r\n  \"userId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/posts/3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// resource will not be really deleted on the server but it will be faked as if\r",
+                  "pm.test(\"Verify post was deleted \", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.eql({});\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/posts/4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "posts",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ReqResCRUDandAuthentication",
+      "item": [
+        {
+          "name": "Get Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Verify that the response time is less than 200ms\", function () {\r",
+                  "    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+                  "});\r",
+                  "\r",
+                  "//I've used environment variable and Headers section to add API Key\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "//But alternatively you can add API Key in the Pre-request Script as well:\r",
+                  "//pm.request.headers.add({ key: \"x-api-key\", value: \"YOUR_API_KEY\" });"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User By Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/users/7",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "7"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that user was created\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    // Check that element's fiels are correct\r",
+                  "    pm.expect(jsonData.name).to.eql(\"Vlad\");\r",
+                  "    pm.expect(jsonData.job).to.eql(\"QA Engineer\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Vlad\",\r\n  \"job\": \"QA Engineer\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify PUT request is successful\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Verify that user was updated\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    // Check that element's fiels are correct\r",
+                  "    pm.expect(jsonData.name).to.eql(\"Jane Updated\");\r",
+                  "    pm.expect(jsonData.job).to.eql(\"Senior QA Engineer\");\r",
+                  "});\r",
+                  "\r",
+                  "// ReqRes is training API so PUT request works even if you don't provide full data in the body."
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Jane Updated\",\r\n  \"job\": \"Senior QA Engineer\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify PUT request is successful\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+                  "});\r",
+                  "\r",
+                  "\r",
+                  "pm.test(\"Verify that user was not partially updated\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    // Since ReqRes doesn't save the job field from previous PUT request, we expect it to be undefined/doesn't exist.\r",
+                  "    pm.expect(jsonData.job).to.be.undefined;\r",
+                  "    pm.expect(jsonData).to.not.have.property(\"job\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"job\": \"Lead QA Engineer\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify DELETE request is successful\", function () {\r",
+                  "    pm.response.to.have.status(204);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Response body is empty\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.eql(\"\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Auth(Normal)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Get and set token that we got from the body\r",
+                  "pm.test(\"Set token as environment variable\", function () {\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.environment.set(\"token\", jsonData.token);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Check if there is a Header Content-Type\r",
+                  "let hasHeader = false;\r",
+                  "pm.request.headers.each(function(header) {\r",
+                  "    if (header.key.toLowerCase() === \"content-type\") {\r",
+                  "        hasHeader = true;\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "// If no - add it\r",
+                  "if (!hasHeader) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Content-Type\",\r",
+                  "        value: \"application/json\"\r",
+                  "    });\r",
+                  "}\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{api_key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"eve.holt@reqres.in\",\r\n  \"password\": \"pistol\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User With Token",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Check if token exists in environment variables\r",
+                  "pm.test(\"Verify that token exists and add it to the request headers if it does\", function () {\r",
+                  "   let token = pm.environment.get(\"token\");\r",
+                  "\r",
+                  "   // If token exists - add it to the request headers\r",
+                  "   if (token) {\r",
+                  "     pm.request.headers.add({\r",
+                  "         key: \"Authorization\",\r",
+                  "         value: `Bearer ${token}`\r",
+                  "     });\r",
+                  "}\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// The ReqRes token from the standard registration is purely for display purposes. It cannot be used to access data.\r",
+                  "// So you will get error 401 Unauthorized. \r",
+                  "pm.test(\"Status code is 401\", function () {\r",
+                  "    pm.response.to.have.status(401);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/app-users?page=2",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "app-users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Restful-BookerCRUDandOptions",
+      "item": [
+        {
+          "name": "Auth - CreateToken",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Get and set token that we got from the body\r",
+                  "pm.test(\"Set token as environment variable\", function () {\r",
+                  "    let jsonData = pm.response.json();\r",
+                  "    pm.environment.set(\"token\", jsonData.token);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Check if there is a Header Content-Type\r",
+                  "let hasHeader = false;\r",
+                  "pm.request.headers.each(function(header) {\r",
+                  "    if (header.key.toLowerCase() === \"content-type\") {\r",
+                  "        hasHeader = true;\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "// If no - add it\r",
+                  "if (!hasHeader) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Content-Type\",\r",
+                  "        value: \"application/json\"\r",
+                  "    });\r",
+                  "}\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"password123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/auth",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Booking Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/booking/3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "booking",
+                "3"
+              ],
+              "query": [
+                {
+                  "key": "firstname",
+                  "value": "Mary",
+                  "disabled": true
+                },
+                {
+                  "key": "lastname",
+                  "value": "Wilson",
+                  "disabled": true
+                },
+                {
+                  "key": "checkin",
+                  "value": "2016-08-30",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Booking",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Check if there is a Header Content-Type\r",
+                  "let hasHeader = false;\r",
+                  "pm.request.headers.each(function(header) {\r",
+                  "    if (header.key.toLowerCase() === \"content-type\") {\r",
+                  "        hasHeader = true;\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "// If no - add it\r",
+                  "if (!hasHeader) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Content-Type\",\r",
+                  "        value: \"application/json\"\r",
+                  "    });\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Verify that booking was created\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    // Checking of the upper level\r",
+                  "    pm.expect(jsonData).to.have.property(\"bookingid\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"booking\");\r",
+                  "\r",
+                  "    // Checking nested booking properties\r",
+                  "     pm.expect(jsonData.booking.firstname).to.eql(\"Jim\");\r",
+                  "    pm.expect(jsonData.booking.lastname).to.eql(\"Brown\");\r",
+                  "\r",
+                  "    // Checking even deeper nested json properties bookingdates\r",
+                  "    pm.expect(jsonData.booking.bookingdates.checkin).to.eql(\"2018-01-01\");\r",
+                  "    pm.expect(jsonData.booking.bookingdates.checkout).to.eql(\"2019-01-01\");\r",
+                  "\r",
+                  "     // Additional properties\r",
+                  "    pm.expect(jsonData.booking.additionalneeds).to.eql(\"Breakfast\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\" : \"Jim\",\r\n    \"lastname\" : \"Brown\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n      \"checkin\" : \"2018-01-01\",\r\n      \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/booking",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Booking",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Check if token exist in environment variables\r",
+                  "let token = pm.environment.get(\"token\");\r",
+                  "\r",
+                  "// If token was found in environment variables, add it to the request header\r",
+                  "if (token) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Cookie\",\r",
+                  "        value: `token=${token}`\r",
+                  "    });\r",
+                  "}\r",
+                  "\r",
+                  "// Additionally add Content-Type: application/json\r",
+                  "let hasContentType = false;\r",
+                  "pm.request.headers.each(function(header) {\r",
+                  "    if (header.key.toLowerCase() === \"content-type\") {\r",
+                  "        hasContentType = true;\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "if (!hasContentType) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Content-Type\",\r",
+                  "        value: \"application/json\"\r",
+                  "    });\r",
+                  "}\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Verify that booking was updated\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "",
+                  "    // The PUT /booking/:id response returns the booking object directly (no wrapper)",
+                  "    pm.expect(jsonData).to.have.property(\"firstname\");",
+                  "    pm.expect(jsonData).to.have.property(\"lastname\");",
+                  "    pm.expect(jsonData).to.have.property(\"totalprice\");",
+                  "    pm.expect(jsonData).to.have.property(\"depositpaid\");",
+                  "    pm.expect(jsonData).to.have.property(\"bookingdates\");",
+                  "",
+                  "    // Verify the updated values match what was sent in the request body",
+                  "    pm.expect(jsonData.firstname).to.eql(\"James\");",
+                  "    pm.expect(jsonData.lastname).to.eql(\"Brown\");",
+                  "    pm.expect(jsonData.totalprice).to.eql(111);",
+                  "    pm.expect(jsonData.depositpaid).to.eql(true);",
+                  "    pm.expect(jsonData.additionalneeds).to.eql(\"Breakfast\");",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Cookie",
+                "value": "token={{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\" : \"James\",\r\n    \"lastname\" : \"Brown\",\r\n    \"totalprice\" : 111,\r\n    \"depositpaid\" : true,\r\n    \"bookingdates\" : {\r\n        \"checkin\" : \"2018-01-01\",\r\n        \"checkout\" : \"2019-01-01\"\r\n    },\r\n    \"additionalneeds\" : \"Breakfast\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/booking/3",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "booking",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Partial Update Booking",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Check if token exist in environment variables\r",
+                  "let token = pm.environment.get(\"token\");\r",
+                  "\r",
+                  "// If token was found in environment variables, add it to the request header\r",
+                  "if (token) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Cookie\",\r",
+                  "        value: `token=${token}`\r",
+                  "    });\r",
+                  "}\r",
+                  "\r",
+                  "// Additionally add Content-Type: application/json\r",
+                  "let hasContentType = false;\r",
+                  "pm.request.headers.each(function(header) {\r",
+                  "    if (header.key.toLowerCase() === \"content-type\") {\r",
+                  "        hasContentType = true;\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "if (!hasContentType) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Content-Type\",\r",
+                  "        value: \"application/json\"\r",
+                  "    });\r",
+                  "}\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify that status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "pm.test(\"Verify that booking was partially updated\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "\r",
+                  "    // The PUT /booking/:id response returns the booking object directly (no wrapper)\r",
+                  "    pm.expect(jsonData).to.have.property(\"firstname\");\r",
+                  "    pm.expect(jsonData).to.have.property(\"lastname\");\r",
+                  "    \r",
+                  "    // Verify the updated values match what was sent in the request body\r",
+                  "    pm.expect(jsonData.firstname).to.eql(\"Iron\");\r",
+                  "    pm.expect(jsonData.lastname).to.eql(\"Bigger\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"firstname\" : \"Iron\",\r\n    \"lastname\" : \"Bigger\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}/booking/4",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "booking",
+                "4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Booking",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Check if token exist in environment variables\r",
+                  "let token = pm.environment.get(\"token\");\r",
+                  "\r",
+                  "// If token was found in environment variables, add it to the request header\r",
+                  "if (token) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Cookie\",\r",
+                  "        value: `token=${token}`\r",
+                  "    });\r",
+                  "}\r",
+                  "\r",
+                  "// Additionally add Content-Type: application/json\r",
+                  "let hasContentType = false;\r",
+                  "pm.request.headers.each(function(header) {\r",
+                  "    if (header.key.toLowerCase() === \"content-type\") {\r",
+                  "        hasContentType = true;\r",
+                  "    }\r",
+                  "});\r",
+                  "\r",
+                  "if (!hasContentType) {\r",
+                  "    pm.request.headers.add({\r",
+                  "        key: \"Content-Type\",\r",
+                  "        value: \"application/json\"\r",
+                  "    });\r",
+                  "}\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Verify DELETE request is successful\", function () {\r",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 204]);\r",
+                  "});\r",
+                  "\r",
+                  "// Restfull-Booker DELETE request returns with text Created as per official documentation\r",
+                  "pm.test(\"Verify response contains 'Created'\", function () {\r",
+                  "    pm.expect(pm.response.text()).to.include(\"Created\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/booking/5",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "booking",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Head Booking Id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Check if responce header Content-Type contains application/json\r",
+                  "pm.test(\"Content-Type contains application/json\", function () {\r",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+                  "});"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "HEAD",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/booking/1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "booking",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Options Methods",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\r",
+                  "    pm.response.to.have.status(200);\r",
+                  "});\r",
+                  "\r",
+                  "// Check what methods server allows for this endpoint.\r",
+                  "pm.test(\"Allow header contains methods\", function () {\r",
+                  "    let allowHeader = pm.response.headers.get(\"Allow\");\r",
+                  "    pm.expect(allowHeader).to.include(\"GET\");\r",
+                  "    pm.expect(allowHeader).to.include(\"POST\");\r",
+                  "});\r",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "OPTIONS",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/booking",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "booking"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ]
+}
