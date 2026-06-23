@@ -1,0 +1,45 @@
+name: API Tests and Deploy
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '18'
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run tests with Env 1
+        run: newman run postman/APITesting.json -e postman/JSONPlaceholderENV.json --reporters cli
+
+      - name: Run tests with Env 2
+        run: newman run postman/APITesting.json -e postman/ReqResENV.json --reporters cli
+
+      - name: Run tests with Env 3
+        run: newman run postman/APITesting.json -e postman/restful-bookerENV.json --reporters cli
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
