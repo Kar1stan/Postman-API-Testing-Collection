@@ -22,13 +22,25 @@ jobs:
         run: npm install -g newman
 
       - name: Run tests with Env 1
-        run: newman run postman/APITesting.postman_collection.json -e postman/JSONPlaceholderENV.postman_environment.json --reporters cli
+        run: |          
+         newman run postman/APITesting.postman_collection.json \
+          -e postman/JSONPlaceholderENV.postman_environment.json \
+          --folder "JSONPlaceholderCRUDBasics" \
+          --reporters cli
 
       - name: Run tests with Env 2
-        run: newman run postman/APITesting.postman_collection.json -e postman/ReqResENV.postman_environment.json --reporters cli
+        run: |          
+         newman run postman/APITesting.postman_collection.json \
+          -e postman/ReqResENV.postman_environment.json \
+          --folder "ReqResCRUDandAuthentication" \
+          --reporters cli
 
       - name: Run tests with Env 3
-        run: newman run postman/APITesting.postman_collection.json -e postman/restful-bookerENV.postman_environment.json --reporters cli
+        run: |          
+         newman run postman/APITesting.postman_collection.json \
+          -e postman/restful-bookerENV.postman_environment.json \
+          --folder "Restful-BookerCRUDandOptions" \
+          --reporters cli
 
   deploy:
     runs-on: ubuntu-latest
