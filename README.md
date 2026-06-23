@@ -23,5 +23,3 @@ Step by step -
 ## Credits
 
 For further help or additional errors [here](https://learning.postman.com/)
-
-If you want help about allure [here](https://allurereport.org/)
