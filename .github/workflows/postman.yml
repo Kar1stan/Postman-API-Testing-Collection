@@ -29,6 +29,7 @@ jobs:
           --folder "JSONPlaceholderCRUDBasics" \
           # The --folder flag to not test all collection only specific folder
           --reporters cli
+          # This is a flag for Newman that indicates text output directly to the GitHub Actions console (with colors and statuses).
 
       - name: Run tests with Env 2
         run: |          
@@ -52,6 +53,7 @@ jobs:
       contents: write
       # Grant it permission to push to the gh-pages branch.
     if: success()
+    # Adds condition to perform the step only if the previous steps were successful.
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
