@@ -24,7 +24,10 @@ jobs:
       - name: Run tests with Env 1
         run: |          
          newman run postman/APITesting.postman_collection.json -e postman/JSONPlaceholderENV.postman_environment.json --folder "JSONPlaceholderCRUDBasics" --reporters cli
-
+         # The ENV file for environment variables 
+         # The --folder flag to not test all collection only specific folder
+         # the --reporters cli flag for Newman that indicates text output directly to the GitHub Actions console (with colors and statuses).
+         
       - name: Run tests with Env 2
         run: |          
          newman run postman/APITesting.postman_collection.json \
