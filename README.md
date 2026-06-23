@@ -16,11 +16,12 @@ Before you use this project you have be installed Postman.
 ## 🚀 Run the project:
 
 Step by step -
-1.Import collection APITesting.postman_collection.json to Postman
 
-2.Import environment files *.postman_environment.json to Postman
+1. Import collection APITesting.postman_collection.json to Postman
 
-3.Run the collection with the appropriate environment in Postman
+2. Import environment files *.postman_environment.json to Postman
+
+3. Run the collection with the appropriate environment in Postman
 
 ## Credits
 
