@@ -22,13 +22,13 @@ jobs:
         run: npm install -g newman
 
       - name: Run tests with Env 1
-        run: newman run postman/APITesting.json -e postman/JSONPlaceholderENV.json --reporters cli
+        run: newman run postman/APITesting.postman_collection.json -e postman/JSONPlaceholderENV.postman_environment.json --reporters cli
 
       - name: Run tests with Env 2
-        run: newman run postman/APITesting.json -e postman/ReqResENV.json --reporters cli
+        run: newman run postman/APITesting.postman_collection.json -e postman/ReqResENV.postman_environment.json --reporters cli
 
       - name: Run tests with Env 3
-        run: newman run postman/APITesting.json -e postman/restful-bookerENV.json --reporters cli
+        run: newman run postman/APITesting.postman_collection.json -e postman/restful-bookerENV.postman_environment.json --reporters cli
 
   deploy:
     needs: test
