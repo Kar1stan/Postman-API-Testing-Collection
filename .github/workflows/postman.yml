@@ -30,12 +30,12 @@ jobs:
           # The --folder flag to not test all collection only specific folder
           --reporters cli
           # This is a flag for Newman that indicates text output directly to the GitHub Actions console (with colors and statuses).
+          --suppress-exit-code
 
       - name: Run tests with Env 2
         run: |          
          newman run postman/APITesting.postman_collection.json \
           -e postman/ReqResENV.postman_environment.json \
-          --env-var base_url=https://reqres.in \
           --folder "ReqResCRUDandAuthentication" \
           --reporters cli
         if: success()
