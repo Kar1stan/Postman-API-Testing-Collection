@@ -37,6 +37,8 @@ jobs:
           -e postman/ReqResENV.postman_environment.json \
           --folder "ReqResCRUDandAuthentication" \
           --reporters cli
+        if: success()
+        # Adds condition to perform the step only if the previous steps were successful.
 
       - name: Run tests with Env 3
         run: |          
@@ -44,6 +46,7 @@ jobs:
           -e postman/restful-bookerENV.postman_environment.json \
           --folder "Restful-BookerCRUDandOptions" \
           --reporters cli
+        if: success()
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,8 +55,6 @@ jobs:
     permissions:
       contents: write
       # Grant it permission to push to the gh-pages branch.
-    if: success()
-    # Adds condition to perform the step only if the previous steps were successful.
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
