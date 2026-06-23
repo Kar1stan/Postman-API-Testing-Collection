@@ -25,7 +25,9 @@ jobs:
         run: |          
          newman run postman/APITesting.postman_collection.json \
           -e postman/JSONPlaceholderENV.postman_environment.json \
+          # The ENV file for environment variables
           --folder "JSONPlaceholderCRUDBasics" \
+          # The --folder flag to not test all collection only specific folder
           --reporters cli
 
       - name: Run tests with Env 2
