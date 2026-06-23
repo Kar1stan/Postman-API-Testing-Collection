@@ -35,6 +35,7 @@ jobs:
         run: |          
          newman run postman/APITesting.postman_collection.json \
           -e postman/ReqResENV.postman_environment.json \
+          --env-var base_url=https://reqres.in \
           --folder "ReqResCRUDandAuthentication" \
           --reporters cli
         if: success()
